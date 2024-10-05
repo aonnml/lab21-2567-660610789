@@ -1,7 +1,7 @@
-import _ from "lodash";
-import { LowSync, MemorySync } from "lowdb";
-import { JSONFileSync } from "lowdb/node";
 import fs from "fs";
+import _ from "lodash";
+import { LowSync } from "lowdb";
+import { JSONFileSync } from "lowdb/node";
 
 const originalDB = {
   students: [
