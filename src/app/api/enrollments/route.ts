@@ -79,29 +79,35 @@ export const POST = async (request: NextRequest) => {
       { status: 400 }
     );
   }
+
+  // Coding in lecture
   const prisma = getPrisma();
-  const courses = await prisma.course.findUnique({
-    where: { courseNo: courseNo }
+
+  const course = await prisma.course.findFirst({
+    where: { courseNo: courseNo },
   });
 
-  if(!courses){
+  if(!course){
     return NextResponse.json(
       {
         ok: false,
         message: "Course number does not exist",
       },
-      { status: 400 }
+      { status: 404 }
     );
   }
 
-  const enrollments = await prisma.enrollment.findUnique({
-    where:{courseNo_studentId:{courseNo:courseNo, studentId:studentId}}
+  const courseEnroll = await prisma.enrollment.findFirst({
+    where: {
+      courseNo: courseNo,
+      studentId: studentId,
+    },
   });
-  if(enrollments){
+
+  if (courseEnroll) {
     return NextResponse.json(
-      {
-        ok: false,
-        message: "You already registered this course",
+      { ok: false, 
+        message: "You already registered this course" 
       },
       { status: 400 }
     );
@@ -110,7 +116,7 @@ export const POST = async (request: NextRequest) => {
   await prisma.enrollment.create({
     data: {
       courseNo: courseNo,
-      studentId: studentId
+      studentId: studentId,
     }
   })
 
@@ -158,10 +164,15 @@ export const DELETE = async (request: NextRequest) => {
   }
 
   const prisma = getPrisma();
+  // Perform data delete
   await prisma.enrollment.delete({
-    where:{courseNo_studentId:{courseNo:courseNo, studentId:studentId}}
-  }
-  )
+    where: {
+    courseNo_studentId: {
+      courseNo: courseNo,
+      studentId: studentId,
+      },
+    }
+  });
 
   return NextResponse.json({
     ok: true,

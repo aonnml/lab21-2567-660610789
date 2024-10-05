@@ -33,16 +33,15 @@ export default function RootLayout({
       isTokenValid = false;
     } else {
       //check if token is still valid
-
-      await axios
-        .get("/api/user/checkAuthen", {
+      try {
+        const resp = await axios.get("/api/user/checkAuthen", {
           headers: { Authorization: `Bearer ${token}` },
-        })
-        .catch((err) => {
-          console.log(err.message);
-          isTokenValid = false;
         });
-      $authenStore.set({ token, authenUsername });
+        $authenStore.set({ token, authenUsername });
+      } catch (err:any) {
+        console.log(err.message);
+        isTokenValid = false;
+      }
     }
 
     //go to login if not logged in yet and trying to access protected route
