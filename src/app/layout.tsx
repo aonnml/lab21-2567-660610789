@@ -1,15 +1,15 @@
 "use client";
 
+import Footer from "@components/Footer";
 import { $authenStore } from "@lib/authenStore";
 import { Container, Group, Loader, Title } from "@mantine/core";
+import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import Footer from "@components/Footer";
-import axios from "axios";
 
-import { Inter } from "next/font/google";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +39,7 @@ export default function RootLayout({
         });
         $authenStore.set({ token, authenUsername });
       } catch (err) {
-        console.log(err.message);
+        //console.log(err.message);
         isTokenValid = false;
       }
     }
@@ -80,8 +80,8 @@ export default function RootLayout({
               </Title>
               {children}
               <Footer
-                studentId="660610999"
-                fullName="Dome Potikanond"
+                studentId="660610789"
+                fullName="Ratchanon Chaiwong"
                 year="2024"
               />
             </Container>
